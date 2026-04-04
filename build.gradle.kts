@@ -31,7 +31,9 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation("net.fabricmc.fabric-api:fabric-api:${providers.gradleProperty("fabric_api_version").get()}")
-	modApi("infinituum.fastconfigapi:fastconfigapi-fabric:1.20.1-2.1.2")
+	
+	// YAML parsing
+	implementation("org.yaml:snakeyaml:2.0")
 }
 
 tasks.processResources {

@@ -2,6 +2,7 @@ package com.xirosum.xiros.border.block;
 
 import com.xirosum.xiros.border.block.block.ModBlocks;
 import com.xirosum.xiros.border.block.block.entity.ModBlockEntities;
+import com.xirosum.xiros.border.block.config.BorderBlockConfigAccess;
 import com.xirosum.xiros.border.block.item.ModItems;
 import com.xirosum.xiros.border.block.screen.ModScreenHandlers;
 import com.xirosum.xiros.border.block.utils.RewardLootTable;
@@ -26,7 +27,8 @@ public class XirosBorderBlock implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 
-		LOGGER.info("Hello Fabric world!");
+		// Load config early
+		BorderBlockConfigAccess.bootstrap();
 
 		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();

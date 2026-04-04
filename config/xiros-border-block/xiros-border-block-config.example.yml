@@ -1,0 +1,52 @@
+# Xiros Border Block Configuration Example
+# This is an example with multiple stages and different rewards
+
+stages:
+  # Early game stage - Diamond requirement
+  - stageId: 0
+    startingBorderSize: 0
+    endingBorderSize: 1000
+    requiredItem: minecraft:diamond
+    rewardMultiplier: 1
+    expansionMultiplier: 1
+    lootTable:
+      - rewards:
+          - minecraft:acacia_sapling
+        weight: 10
+      - rewards:
+          - minecraft:oak_sapling
+        weight: 5
+
+  # Mid game stage - Emerald requirement
+  - stageId: 1
+    startingBorderSize: 1000
+    endingBorderSize: 2500
+    requiredItem: minecraft:emerald
+    rewardMultiplier: 2
+    expansionMultiplier: 2
+    lootTable:
+      - rewards:
+          - minecraft:diamond
+        weight: 15
+      - rewards:
+          - minecraft:lapis_lazuli
+        weight: 10
+
+  # Late game stage - Netherite requirement
+  - stageId: 2
+    startingBorderSize: 2500
+    endingBorderSize: 5000
+    requiredItem: minecraft:netherite_ingot
+    rewardMultiplier: 3
+    expansionMultiplier: 3
+    lootTable:
+      - rewards:
+          - minecraft:enchanted_golden_apple
+        weight: 20
+      - rewards:
+          - minecraft:netherite_block
+        weight: 5
+
+# Default fallback reward if a loot table is empty
+defaultReward: minecraft:dirt
+

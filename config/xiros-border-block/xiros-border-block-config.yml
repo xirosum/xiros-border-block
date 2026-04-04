@@ -1,0 +1,18 @@
+# Xiros Border Block Configuration
+# Define stages for border expansion with different required items and rewards
+
+stages:
+  - stageId: 0
+    startingBorderSize: 0
+    endingBorderSize: 1000
+    requiredItem: minecraft:diamond
+    rewardMultiplier: 1
+    expansionMultiplier: 1
+    lootTable:
+      - rewards:
+          - minecraft:acacia_sapling
+        weight: 10
+
+# Default reward item if loot table is empty
+defaultReward: minecraft:dirt
+
