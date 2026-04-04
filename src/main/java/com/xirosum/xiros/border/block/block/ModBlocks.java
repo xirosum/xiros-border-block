@@ -2,6 +2,7 @@ package com.xirosum.xiros.border.block.block;
 
 import com.xirosum.xiros.border.block.XirosBorderBlock;
 import com.xirosum.xiros.border.block.block.custom.BorderBlock;
+import com.xirosum.xiros.border.block.block.custom.CorruptedBorderBlock;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -17,6 +18,7 @@ import net.minecraft.util.Identifier;
 
 public class ModBlocks {
     public static final Block BORDER_BLOCK = registerBlock(("border_block"), new BorderBlock(FabricBlockSettings.copyOf(Blocks.BEDROCK).nonOpaque()));
+    public static final Block CORRUPTED_BORDER_BLOCK = registerBlock(("corrupted_border_block"), new CorruptedBorderBlock(FabricBlockSettings.copyOf(Blocks.BEDROCK).nonOpaque()));
 
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);

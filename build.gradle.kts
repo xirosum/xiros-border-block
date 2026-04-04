@@ -21,6 +21,15 @@ repositories {
 		name = "Infinituum Mod Resources"
 		url = uri("https://raw.githubusercontent.com/Infinituum17/ModResources/main/maven/")
 	}
+
+	maven {
+		name = "GeckoLib"
+		url = uri("https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/")
+		content {
+			includeGroupByRegex("software\\.bernie.*")
+			includeGroup("com.eliotlash.mclib")
+		}
+	}
 }
 
 dependencies {
@@ -34,6 +43,9 @@ dependencies {
 	
 	// YAML parsing
 	implementation("org.yaml:snakeyaml:2.0")
+
+	modImplementation("software.bernie.geckolib:geckolib-fabric-${providers.gradleProperty("minecraft_version").get()}:${providers.gradleProperty("geckolib_version").get()}")
+	implementation("com.eliotlash.mclib:mclib:20")
 }
 
 tasks.processResources {

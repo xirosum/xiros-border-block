@@ -51,6 +51,7 @@ public class BorderBlockEntity extends BlockEntity implements ExtendedScreenHand
 
     private boolean initComplete = false;
 
+
     public BorderBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.BORDER_BLOCK_ENTITY, pos, state);
 
