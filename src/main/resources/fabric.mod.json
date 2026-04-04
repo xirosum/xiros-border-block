@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"id": "xiros-border-block",
+	"version": "${version}",
+	"name": "xiros border block",
+	"description": "This mod is meant to enable a way for servers to have an expanding border based on payment of some resource. When the payment is made a reward is generated that can be configures to give players that use it items or blocks. lol!",
+	"authors": [
+		"xirosum"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "tbd"
+	},
+	"license": "MIT",
+	"icon": "assets/xiros-border-block/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.xirosum.xiros.border.block.XirosBorderBlock"
+		],
+		"client": [
+			"com.xirosum.xiros.border.block.XirosBorderBlockClient"
+		]
+	},
+	"mixins": [
+		"xiros-border-block.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.18.4",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*",
+		"fastconfigapi": ">=2.1.2"
+	}
+}
