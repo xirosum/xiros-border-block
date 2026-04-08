@@ -75,7 +75,7 @@ public class BaseBorderBlockEntity extends BlockEntity implements ExtendedScreen
 
             @Override
             public int size() {
-                return 0;
+                return 2;
             }
         };
 
