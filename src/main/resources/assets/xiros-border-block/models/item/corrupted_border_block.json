@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "xiros-border-block:item/corrupted_border_block"
+  }
+}
