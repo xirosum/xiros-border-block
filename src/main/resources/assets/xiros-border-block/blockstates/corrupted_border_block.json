@@ -1,7 +1,8 @@
 {
   "variants": {
-    "": {
-      "model": "xiros-border-block:block/border_block"
-    }
+    "facing=north": { "model": "xiros-border-block:block/border_block", "y": 0 },
+    "facing=east":  { "model": "xiros-border-block:block/border_block", "y": 90 },
+    "facing=south": { "model": "xiros-border-block:block/border_block", "y": 180},
+    "facing=west":  { "model": "xiros-border-block:block/border_block", "y": 280 }
   }
 }
