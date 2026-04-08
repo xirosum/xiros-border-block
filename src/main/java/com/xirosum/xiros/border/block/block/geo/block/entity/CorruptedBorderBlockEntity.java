@@ -3,7 +3,6 @@ package com.xirosum.xiros.border.block.block.geo.block.entity;
 import com.xirosum.xiros.border.block.block.entity.BaseBorderBlockEntity;
 import com.xirosum.xiros.border.block.block.entity.ModBlockEntities;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.constant.DefaultAnimations;
