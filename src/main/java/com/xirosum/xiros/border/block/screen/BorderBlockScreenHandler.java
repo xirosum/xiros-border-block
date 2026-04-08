@@ -1,5 +1,6 @@
 package com.xirosum.xiros.border.block.screen;
 
+import com.xirosum.xiros.border.block.block.entity.BaseBorderBlockEntity;
 import com.xirosum.xiros.border.block.block.entity.BorderBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,7 +18,7 @@ public class BorderBlockScreenHandler extends ScreenHandler {
 
     private final PropertyDelegate propertyDelegate;
 
-    public final BorderBlockEntity blockEntity;
+    public final BaseBorderBlockEntity blockEntity;
 
     public BorderBlockScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
         this(syncId, playerInventory, playerInventory.player.getWorld().getBlockEntity(buf.readBlockPos()), new ArrayPropertyDelegate(2));
@@ -31,7 +32,7 @@ public class BorderBlockScreenHandler extends ScreenHandler {
 
         inventory.onOpen(playerInventory.player);
         this.propertyDelegate = propertyDelegate;
-        this.blockEntity = ((BorderBlockEntity) blockEntity);
+        this.blockEntity = ((BaseBorderBlockEntity) blockEntity);
 
         this.addSlot(new Slot(inventory, 0, 80, 11));
         this.addSlot(new Slot(inventory, 1, 80, 59));

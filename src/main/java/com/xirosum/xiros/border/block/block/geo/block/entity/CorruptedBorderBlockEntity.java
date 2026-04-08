@@ -1,5 +1,6 @@
 package com.xirosum.xiros.border.block.block.geo.block.entity;
 
+import com.xirosum.xiros.border.block.block.entity.BaseBorderBlockEntity;
 import com.xirosum.xiros.border.block.block.entity.ModBlockEntities;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -11,7 +12,7 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class CorruptedBorderBlockEntity extends BlockEntity implements GeoBlockEntity {
+public class CorruptedBorderBlockEntity extends BaseBorderBlockEntity implements GeoBlockEntity {
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
