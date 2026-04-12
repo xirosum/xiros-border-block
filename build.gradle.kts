@@ -41,8 +41,9 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation("net.fabricmc.fabric-api:fabric-api:${providers.gradleProperty("fabric_api_version").get()}")
 	
-	// YAML parsing
+	// YAML parsing - bundled via Jar-in-Jar so users don't need to install it separately
 	implementation("org.yaml:snakeyaml:2.0")
+	include("org.yaml:snakeyaml:2.0")
 
 	modImplementation("software.bernie.geckolib:geckolib-fabric-${providers.gradleProperty("minecraft_version").get()}:${providers.gradleProperty("geckolib_version").get()}")
 	implementation("com.eliotlash.mclib:mclib:20")
