@@ -25,6 +25,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.border.WorldBorder;
 import org.jetbrains.annotations.Nullable;
@@ -117,6 +118,16 @@ public class BaseBorderBlockEntity extends BlockEntity implements ExtendedScreen
     @Override
     public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         return new BorderBlockScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
+    }
+
+    @Override
+    public boolean canInsert(int slot, ItemStack stack, @Nullable Direction side) {
+        return slot == INPUT_SLOT && stack.getItem() == inputItem;
+    }
+
+    @Override
+    public boolean canExtract(int slot, ItemStack stack, Direction side) {
+        return slot == OUTPUT_SLOT;
     }
 
     public void tick(World world, BlockPos pos, BlockState state) {
