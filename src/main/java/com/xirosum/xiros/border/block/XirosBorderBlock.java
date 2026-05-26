@@ -4,10 +4,14 @@ import com.xirosum.xiros.border.block.block.ModBlocks;
 import com.xirosum.xiros.border.block.block.entity.ModBlockEntities;
 import com.xirosum.xiros.border.block.config.BorderBlockConfigAccess;
 import com.xirosum.xiros.border.block.item.ModItems;
+import com.xirosum.xiros.border.block.logic.Hoarder;
+import com.xirosum.xiros.border.block.logic.persistance.HoarderData;
 import com.xirosum.xiros.border.block.screen.ModScreenHandlers;
 import com.xirosum.xiros.border.block.utils.RewardLootTable;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.minecraft.world.PersistentStateManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +25,9 @@ public class XirosBorderBlock implements ModInitializer {
 
 	public static RewardLootTable rewardLootTable = new RewardLootTable();
 
-	@Override
+    public static HoarderData hoarderData;
+
+    @Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
@@ -34,5 +40,11 @@ public class XirosBorderBlock implements ModInitializer {
 		ModBlocks.registerModBlocks();
 		ModBlockEntities.registerBlockEntities();
 		ModScreenHandlers.registerScreenHandlers();
+
+		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+			PersistentStateManager stateManager = server.getOverworld().getPersistentStateManager();
+			hoarderData = HoarderData.loadFromPersistentStateManager(stateManager);
+			Hoarder.loadFoundItems();
+		});
 	}
 }
