@@ -79,7 +79,7 @@ public class HoarderData extends PersistentState {
         NbtCompound nbtFrom = result.getOrThrow(false, HoarderData::logError).writeNbt(new NbtCompound());
 
         return new HoarderData(
-            nbtFrom.getList("foundItems", 8).stream().map(NbtElement::asString).toList(),
+            nbtFrom.getList("foundItems", 8).stream().map(NbtElement::asString).collect(java.util.stream.Collectors.toCollection(ArrayList::new)),
             nbtFrom.getCompound("playerItemCounts").getKeys().stream().collect(
                 java.util.stream.Collectors.toMap(
                     key -> key,

@@ -5,7 +5,9 @@ import com.xirosum.xiros.border.block.logic.persistance.HoarderData;
 import com.xirosum.xiros.border.block.logic.score.CompletionPercentage;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 
@@ -19,20 +21,25 @@ public class Hoarder {
             return;
         }
 
+        Identifier itemId = Registries.ITEM.getId(itemStack.getItem());
+        String itemIdStr = itemId.toString();
+
         // Check the player's inventory for specific items and update the block's state accordingly
-        if (data.foundItems().contains(itemStack.getItem().toString())) {
-            XirosBorderBlock.LOGGER.info("Player {} found item {} but it has already been found before, no border increase", player.getName(), itemStack.getItem());
+        if (data.foundItems().contains(itemIdStr)) {
+            XirosBorderBlock.LOGGER.info("Player {} found item {} but it has already been found before, no border increase", player.getName(), itemIdStr);
             return;
         }
 
         // If foundItems does not contain the item, append and increase border size
-        data.foundItems().add(itemStack.getItem().toString());
+        data.foundItems().add(itemIdStr);
         data.playerItemCounts().put(player.getUuidAsString(), data.playerItemCounts().getOrDefault(player.getUuidAsString(), 0) + 1);
 
-        displayFoundItems(player, itemStack.getItem().toString());
+        displayFoundItems(player, itemIdStr);
 
-        increaseBorder(world, itemStack.getItem().toString());
+        increaseBorder(world, itemIdStr);
     }
+
+    // ...existing code...
 
     private void increaseBorder(World world, String item) {
         if (AchievementItems.achievementItems.containsKey(item)) {
