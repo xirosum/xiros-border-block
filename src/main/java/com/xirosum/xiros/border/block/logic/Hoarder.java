@@ -39,8 +39,6 @@ public class Hoarder {
         increaseBorder(world, itemIdStr);
     }
 
-    // ...existing code...
-
     private void increaseBorder(World world, String item) {
         if (AchievementItems.achievementItems.containsKey(item)) {
             XirosBorderBlock.LOGGER.debug("Player found achievement item {}, increasing border size by 5", item);

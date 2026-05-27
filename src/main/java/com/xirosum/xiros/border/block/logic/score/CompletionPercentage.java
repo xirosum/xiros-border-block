@@ -18,12 +18,10 @@ public class CompletionPercentage {
     }
 
     public static Text getCompletion() {
-        long block_count = Registries.BLOCK.stream().count();
         long items_count = Registries.ITEM.stream().count();
-        long total_count = block_count + items_count;
 
-        double percentage = calculate(XirosBorderBlock.hoarderData.foundItems().size(), total_count);
+        double percentage = calculate(XirosBorderBlock.hoarderData.foundItems().size(), items_count);
 
-        return completionText(XirosBorderBlock.hoarderData.foundItems().size(), (int) total_count);
+        return completionText(XirosBorderBlock.hoarderData.foundItems().size(), (int) items_count);
     }
 }
