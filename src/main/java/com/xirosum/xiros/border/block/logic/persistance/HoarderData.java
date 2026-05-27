@@ -3,6 +3,7 @@ package com.xirosum.xiros.border.block.logic.persistance;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.xirosum.xiros.border.block.XirosBorderBlock;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
@@ -55,10 +56,12 @@ public class HoarderData extends PersistentState {
 
     public void activateHoarder() {
         active = true;
+        XirosBorderBlock.LOGGER.info("Hoarder activated, players can now find items to increase the world border size");
     }
 
     public void deactivateHoarder() {
         active = false;
+        XirosBorderBlock.LOGGER.info("Hoarder deactivated");
     }
 
     @Override
