@@ -1,4 +1,7 @@
 {
   "block.xiros-border-block.border_block": "Border Block",
-  "item.xiros-border-block.border_bundle": "Border Bundle"
+  "item.xiros-border-block.border_bundle": "Border Bundle",
+  "key.categories.xiros-border-block": "Xiros Border Block",
+  "key.xiros-border-block.open_hoarder_menu": "Open Hoarder Menu",
+  "screen.xiros-border-block.hoarder_menu": "Hoarder Menu"
 }
