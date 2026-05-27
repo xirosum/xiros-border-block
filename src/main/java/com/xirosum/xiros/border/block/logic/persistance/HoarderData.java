@@ -6,17 +6,18 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.state.StateManager;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
 public class HoarderData extends PersistentState {
 
-    private final List<String> foundItems;
+    private final ArrayList<String> foundItems;
     private final Map<String, Integer> playerItemCounts;
     private static final Codec<HoarderData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.STRING.listOf().fieldOf("foundItems").forGetter(HoarderData::foundItems),
@@ -25,13 +26,15 @@ public class HoarderData extends PersistentState {
     ));
 
     public HoarderData() {
-        foundItems = List.of();
-        playerItemCounts = Map.of();
+        foundItems = new ArrayList<>();
+        playerItemCounts = new HashMap<>();
     }
 
     public HoarderData(List<String> foundItems, Map<String, Integer> playerItemCounts) {
-        this.foundItems = foundItems;
-        this.playerItemCounts = playerItemCounts;
+        this.foundItems = new ArrayList<>();
+        this.foundItems.addAll(foundItems);
+        this.playerItemCounts = new HashMap<>();
+        this.playerItemCounts.putAll(playerItemCounts);
     }
 
     public List<String> foundItems() {

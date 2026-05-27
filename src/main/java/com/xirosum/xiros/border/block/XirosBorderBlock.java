@@ -2,6 +2,7 @@ package com.xirosum.xiros.border.block;
 
 import com.xirosum.xiros.border.block.block.ModBlocks;
 import com.xirosum.xiros.border.block.block.entity.ModBlockEntities;
+import com.xirosum.xiros.border.block.commands.HoarderCommands;
 import com.xirosum.xiros.border.block.config.BorderBlockConfigAccess;
 import com.xirosum.xiros.border.block.item.ModItems;
 import com.xirosum.xiros.border.block.logic.Hoarder;
@@ -10,7 +11,9 @@ import com.xirosum.xiros.border.block.screen.ModScreenHandlers;
 import com.xirosum.xiros.border.block.utils.RewardLootTable;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.minecraft.server.command.CommandManager;
 import net.minecraft.world.PersistentStateManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +29,7 @@ public class XirosBorderBlock implements ModInitializer {
 	public static RewardLootTable rewardLootTable = new RewardLootTable();
 
     public static HoarderData hoarderData;
+	public static Hoarder hoarder;
 
     @Override
 	public void onInitialize() {
@@ -44,7 +48,11 @@ public class XirosBorderBlock implements ModInitializer {
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			PersistentStateManager stateManager = server.getOverworld().getPersistentStateManager();
 			hoarderData = HoarderData.loadFromPersistentStateManager(stateManager);
-			Hoarder.loadFoundItems();
+			hoarder = new Hoarder();
 		});
+
+		CommandRegistrationCallback.EVENT.register(
+				HoarderCommands::register
+		);
 	}
 }

@@ -1,7 +1,6 @@
 package com.xirosum.xiros.border.block.mixin;
 
 import com.xirosum.xiros.border.block.XirosBorderBlock;
-import com.xirosum.xiros.border.block.logic.Hoarder;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -44,7 +43,6 @@ public class ItemEntityMixin {
         }
 
         XirosBorderBlock.LOGGER.debug("Player {} collided with item entity {} with item stack {}", player.getName(), itemEntity.getUuidAsString(), itemStack.toString());
-
-        Hoarder.trigger(player, itemStack, itemEntity.getWorld());
+        XirosBorderBlock.hoarder.registerNewItem(player, itemStack, itemEntity.getWorld());
     }
 }
