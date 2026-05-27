@@ -25,6 +25,16 @@ public class HoarderCommands{
                                     return 1;
                                 })
                         )
+                        .then(CommandManager.literal("activate"))
+                                .executes(context -> {
+                                    XirosBorderBlock.hoarderData.activateHoarder();
+                                    return 1;
+                                })
+                        .then(CommandManager.literal("deactivate"))
+                                .executes(context -> {
+                                    XirosBorderBlock.hoarderData.deactivateHoarder();
+                                    return 1;
+                                })
 
         );
     }

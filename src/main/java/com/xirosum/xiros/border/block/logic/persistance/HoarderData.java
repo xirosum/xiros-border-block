@@ -19,22 +19,26 @@ public class HoarderData extends PersistentState {
 
     private final ArrayList<String> foundItems;
     private final Map<String, Integer> playerItemCounts;
+    private boolean active;
     private static final Codec<HoarderData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.STRING.listOf().fieldOf("foundItems").forGetter(HoarderData::foundItems),
-            Codec.unboundedMap(Codec.STRING, Codec.INT).fieldOf("playerItemCounts").forGetter(HoarderData::playerItemCounts)
+            Codec.unboundedMap(Codec.STRING, Codec.INT).fieldOf("playerItemCounts").forGetter(HoarderData::playerItemCounts),
+            Codec.BOOL.fieldOf("active").forGetter(HoarderData::isActive)
         ).apply(instance, HoarderData::new
     ));
 
     public HoarderData() {
         foundItems = new ArrayList<>();
         playerItemCounts = new HashMap<>();
+        active = false;
     }
 
-    public HoarderData(List<String> foundItems, Map<String, Integer> playerItemCounts) {
+    public HoarderData(List<String> foundItems, Map<String, Integer> playerItemCounts, boolean active) {
         this.foundItems = new ArrayList<>();
         this.foundItems.addAll(foundItems);
         this.playerItemCounts = new HashMap<>();
         this.playerItemCounts.putAll(playerItemCounts);
+        this.active = active;
     }
 
     public List<String> foundItems() {
@@ -43,6 +47,18 @@ public class HoarderData extends PersistentState {
 
     public Map<String, Integer> playerItemCounts() {
         return playerItemCounts;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void activateHoarder() {
+        active = true;
+    }
+
+    public void deactivateHoarder() {
+        active = false;
     }
 
     @Override
@@ -66,7 +82,8 @@ public class HoarderData extends PersistentState {
                     key -> key,
                     key -> nbtFrom.getCompound("playerItemCounts").getInt(key)
                 )
-            )
+            ),
+            nbtFrom.getBoolean("active")
         );
     }
 

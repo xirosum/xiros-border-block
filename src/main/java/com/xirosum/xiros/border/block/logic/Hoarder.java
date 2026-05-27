@@ -15,6 +15,10 @@ public class Hoarder {
 
     // one way to do it might be useful to use callbacks for block mined or entered inventory
     public void registerNewItem(PlayerEntity player, ItemStack itemStack, World world) {
+        if (!XirosBorderBlock.hoarderData.isActive()) {
+            return;
+        }
+
         // Check the player's inventory for specific items and update the block's state accordingly
         if (data.foundItems().contains(itemStack.getItem().toString())) {
             XirosBorderBlock.LOGGER.info("Player {} found item {} but it has already been found before, no border increase", player.getName(), itemStack.getItem());
