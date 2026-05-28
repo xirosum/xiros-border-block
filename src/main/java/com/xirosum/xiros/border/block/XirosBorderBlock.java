@@ -12,8 +12,8 @@ import com.xirosum.xiros.border.block.utils.RewardLootTable;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.minecraft.server.command.CommandManager;
 import net.minecraft.world.PersistentStateManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +49,12 @@ public class XirosBorderBlock implements ModInitializer {
 			PersistentStateManager stateManager = server.getOverworld().getPersistentStateManager();
 			hoarderData = HoarderData.loadFromPersistentStateManager(stateManager);
 			hoarder = new Hoarder();
+		});
+
+		ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
+			if (hoarderData != null) {
+				hoarderData.markDirty();
+			}
 		});
 
 		CommandRegistrationCallback.EVENT.register(

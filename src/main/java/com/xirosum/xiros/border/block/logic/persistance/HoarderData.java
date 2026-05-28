@@ -5,7 +5,6 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.xirosum.xiros.border.block.XirosBorderBlock;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
@@ -14,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 public class HoarderData extends PersistentState {
@@ -27,6 +27,7 @@ public class HoarderData extends PersistentState {
             Codec.BOOL.fieldOf("active").forGetter(HoarderData::isActive)
         ).apply(instance, HoarderData::new
     ));
+    private static final String ID = "hoarder_data";
 
     public HoarderData() {
         foundItems = new ArrayList<>();
@@ -54,43 +55,85 @@ public class HoarderData extends PersistentState {
         return active;
     }
 
+    public boolean addFoundItem(String itemId) {
+        if (foundItems.contains(itemId)) {
+            return false;
+        }
+
+        foundItems.add(itemId);
+        markDirty();
+        return true;
+    }
+
+    public void incrementPlayerItemCount(String playerUuid) {
+        playerItemCounts.put(playerUuid, playerItemCounts.getOrDefault(playerUuid, 0) + 1);
+        markDirty();
+    }
+
+    public void clearProgress() {
+        if (foundItems.isEmpty() && playerItemCounts.isEmpty()) {
+            return;
+        }
+
+        foundItems.clear();
+        playerItemCounts.clear();
+        markDirty();
+    }
+
     public void activateHoarder() {
+        if (active) {
+            return;
+        }
+
         active = true;
+        markDirty();
         XirosBorderBlock.LOGGER.info("Hoarder activated, players can now find items to increase the world border size");
     }
 
     public void deactivateHoarder() {
+        if (!active) {
+            return;
+        }
+
         active = false;
+        markDirty();
         XirosBorderBlock.LOGGER.info("Hoarder deactivated");
     }
 
     @Override
     public NbtCompound writeNbt(NbtCompound nbt) {
-        nbt.put("hoarderData", CODEC.encodeStart(NbtOps.INSTANCE, this).getOrThrow(false, HoarderData::logError));
+        nbt.put(ID, CODEC.encodeStart(NbtOps.INSTANCE, this).getOrThrow(false, HoarderData::logError));
         return nbt;
     }
 
     public static HoarderData loadFromPersistentStateManager(PersistentStateManager manager) {
-        return manager.getOrCreate(HoarderData::fromNbt, HoarderData::new, "hoarder_data");
+        return manager.getOrCreate(HoarderData::fromNbt, HoarderData::new, ID);
     }
 
     private static HoarderData fromNbt(NbtCompound nbt) {
-        DataResult<HoarderData> result = CODEC.parse(NbtOps.INSTANCE, nbt.getCompound("hoarderData"));
-        NbtCompound nbtFrom = result.getOrThrow(false, HoarderData::logError).writeNbt(new NbtCompound());
+        // Support both the current nested key and a direct-root format for compatibility.
+        NbtCompound payload = nbt.contains(ID) ? nbt.getCompound(ID) : nbt;
+        DataResult<HoarderData> result = CODEC.parse(NbtOps.INSTANCE, payload);
+        Optional<HoarderData> parsed = result.resultOrPartial(HoarderData::logError);
 
-        return new HoarderData(
-            nbtFrom.getList("foundItems", 8).stream().map(NbtElement::asString).collect(java.util.stream.Collectors.toCollection(ArrayList::new)),
-            nbtFrom.getCompound("playerItemCounts").getKeys().stream().collect(
-                java.util.stream.Collectors.toMap(
-                    key -> key,
-                    key -> nbtFrom.getCompound("playerItemCounts").getInt(key)
-                )
-            ),
-            nbtFrom.getBoolean("active")
-        );
+        if (parsed.isPresent()) {
+            HoarderData loaded = parsed.get();
+            XirosBorderBlock.LOGGER.info(
+                "Loaded hoarder data: foundItems={}, players={}, active={}",
+                loaded.foundItems().size(),
+                loaded.playerItemCounts().size(),
+                loaded.isActive()
+            );
+            return loaded;
+        }
+
+        XirosBorderBlock.LOGGER.warn("Failed to parse hoarder data, starting with empty state");
+        return new HoarderData();
     }
 
     private static void logError(String error) {
         System.err.println("Error encoding HoarderData: " + error);
     }
+
+
 }

@@ -10,6 +10,8 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
+import java.util.Objects;
+
 
 public class Hoarder {
     private final HoarderData data = XirosBorderBlock.hoarderData;
@@ -25,14 +27,12 @@ public class Hoarder {
         String itemIdStr = itemId.toString();
 
         // Check the player's inventory for specific items and update the block's state accordingly
-        if (data.foundItems().contains(itemIdStr)) {
+        if (!data.addFoundItem(itemIdStr)) {
             XirosBorderBlock.LOGGER.info("Player {} found item {} but it has already been found before, no border increase", player.getName(), itemIdStr);
             return;
         }
 
-        // If foundItems does not contain the item, append and increase border size
-        data.foundItems().add(itemIdStr);
-        data.playerItemCounts().put(player.getUuidAsString(), data.playerItemCounts().getOrDefault(player.getUuidAsString(), 0) + 1);
+        data.incrementPlayerItemCount(player.getUuidAsString());
 
         displayFoundItems(player, itemIdStr);
 
@@ -51,8 +51,7 @@ public class Hoarder {
     }
 
     public void clear() {
-        data.foundItems().clear();
-        data.playerItemCounts().clear();
+        data.clearProgress();
 
         XirosBorderBlock.LOGGER.info("Hoarder data cleared, all found items and player counts reset");
     }
@@ -62,17 +61,11 @@ public class Hoarder {
     }
 
     private void displayFoundItems(PlayerEntity player, String item) {
-        // Display the found items to the players
-        // this may only display to players in the same world, but that should be fine for now
-        for (PlayerEntity p : player.getWorld().getPlayers()) {
-            p.sendMessage(Text.of("Player " + player.getName() + " found a new item: " + item), false);
-        }
+            displayToAllPlayers(player, Text.of("Player " + player.getName().getString() + " found a new item: " + item));
     }
 
     private void displayToAllPlayers(PlayerEntity player, Text text) {
-        for (PlayerEntity p : player.getWorld().getPlayers()) {
-            p.sendMessage(text, false);
-        }
+        Objects.requireNonNull(player.getServer()).getPlayerManager().broadcast(text, false);
     }
 
 }
