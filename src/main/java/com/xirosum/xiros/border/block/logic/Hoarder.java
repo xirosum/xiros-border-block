@@ -37,6 +37,10 @@ public class Hoarder {
         displayFoundItems(player, itemIdStr);
 
         increaseBorder(world, itemIdStr);
+
+        if (XirosBorderBlock.hoarderScoreBoard.scoreboardActive()) {
+            XirosBorderBlock.hoarderScoreBoard.updatePlayerScore(player.getName().getString(), data.playerItemCounts().get(player.getUuidAsString()));
+        }
     }
 
     private void increaseBorder(World world, String item) {
@@ -62,6 +66,14 @@ public class Hoarder {
 
     private void displayFoundItems(PlayerEntity player, String item) {
             displayToAllPlayers(player, Text.of("Player " + player.getName().getString() + " found a new item: " + item));
+    }
+
+    public void displayScore(PlayerEntity player) {
+        int foundItems = data.foundItems().size();
+        int totalItems = (int) Registries.ITEM.stream().count();
+        double percentage = (double) foundItems / totalItems * 100;
+
+        displayToAllPlayers(player, Text.of("Player " + player.getName().getString() + " has found " + foundItems + " out of " + totalItems + " items (" + String.format("%.2f", percentage) + "%)"));
     }
 
     private void displayToAllPlayers(PlayerEntity player, Text text) {

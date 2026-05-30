@@ -3,6 +3,7 @@ package com.xirosum.xiros.border.block;
 import com.xirosum.xiros.border.block.block.entity.ModBlockEntities;
 import com.xirosum.xiros.border.block.client.CorruptedBorderBlockRenderer;
 import com.xirosum.xiros.border.block.client.input.HoarderKeybinds;
+import com.xirosum.xiros.border.block.client.network.ClientNetworkHandler;
 import com.xirosum.xiros.border.block.screen.BorderBlockScreen;
 import com.xirosum.xiros.border.block.screen.ModScreenHandlers;
 import net.fabricmc.api.ClientModInitializer;
@@ -15,6 +16,7 @@ public class XirosBorderBlockClient implements ClientModInitializer {
         HandledScreens.register(ModScreenHandlers.BORDER_BLOCK_SCREEN_HANDLER, BorderBlockScreen::new);
         BlockEntityRendererRegistry.register(ModBlockEntities.CORRUPTED_BORDER_BLOCK_ENTITY, context -> new CorruptedBorderBlockRenderer());
         HoarderKeybinds.register();
+        ClientNetworkHandler.registerHandlers();
     }
 }
 

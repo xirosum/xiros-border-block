@@ -7,6 +7,8 @@ import com.xirosum.xiros.border.block.config.BorderBlockConfigAccess;
 import com.xirosum.xiros.border.block.item.ModItems;
 import com.xirosum.xiros.border.block.logic.Hoarder;
 import com.xirosum.xiros.border.block.logic.persistance.HoarderData;
+import com.xirosum.xiros.border.block.logic.score.HoarderScoreBoard;
+import com.xirosum.xiros.border.block.network.ServerNetworkHandler;
 import com.xirosum.xiros.border.block.screen.ModScreenHandlers;
 import com.xirosum.xiros.border.block.utils.RewardLootTable;
 import net.fabricmc.api.ModInitializer;
@@ -30,6 +32,7 @@ public class XirosBorderBlock implements ModInitializer {
 
     public static HoarderData hoarderData;
 	public static Hoarder hoarder;
+	public static HoarderScoreBoard hoarderScoreBoard;
 
     @Override
 	public void onInitialize() {
@@ -45,10 +48,15 @@ public class XirosBorderBlock implements ModInitializer {
 		ModBlockEntities.registerBlockEntities();
 		ModScreenHandlers.registerScreenHandlers();
 
+		// Register server network handlers
+		ServerNetworkHandler.registerHandlers();
+
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			PersistentStateManager stateManager = server.getOverworld().getPersistentStateManager();
 			hoarderData = HoarderData.loadFromPersistentStateManager(stateManager);
 			hoarder = new Hoarder();
+
+			hoarderScoreBoard = new HoarderScoreBoard(server);
 		});
 
 		ServerLifecycleEvents.SERVER_STOPPING.register(server -> {

@@ -36,6 +36,30 @@ public class HoarderCommands{
                                     XirosBorderBlock.hoarderData.deactivateHoarder();
                                     return 1;
                                 })
+                        ).then(
+                                CommandManager.literal("score")
+                                        .executes(context -> {
+                                            XirosBorderBlock.hoarder.displayScore(context.getSource().getPlayer());
+                                            return 1;
+                                        })
+                        ).then(
+                                CommandManager.literal("scoreboard")
+                                        .then(
+                                                CommandManager.literal("track")
+                                                        .executes(context -> {
+                                                            XirosBorderBlock.hoarderScoreBoard.addHoarderToScoreboard();
+                                                            return 1;
+                                                        })
+                                        ).then(
+                                                CommandManager.literal("display")
+                                                        .executes(context -> {
+                                                            if (!XirosBorderBlock.hoarderData.isActive()) {
+                                                                return 0;
+                                                            }
+                                                            XirosBorderBlock.hoarderScoreBoard.setScoreboardDisplayPosition();
+                                                            return 1;
+                                                        })
+                                        )
                         )
 
         );

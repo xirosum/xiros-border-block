@@ -1,7 +1,7 @@
 package com.xirosum.xiros.border.block.screen.hoarder;
 
 import com.xirosum.xiros.border.block.XirosBorderBlock;
-import com.xirosum.xiros.border.block.logic.persistance.HoarderData;
+import com.xirosum.xiros.border.block.client.HoarderDataCache;
 import com.xirosum.xiros.border.block.screen.hoarder.widgets.ItemEntry;
 import com.xirosum.xiros.border.block.screen.hoarder.widgets.ItemListWidget;
 import net.fabricmc.loader.api.FabricLoader;
@@ -14,11 +14,15 @@ import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class HoarderMenuScreen extends Screen {
     private ItemListWidget foundItemsListWidget;
     private ItemListWidget missingItemsListWidget;
     private TextFieldWidget searchBox;
     private String lastSearchQuery = "";
+    private long lastDataRevision = -1L;
     private int foundCount = 0;
     private int missingCount = 0;
 
@@ -58,6 +62,7 @@ public class HoarderMenuScreen extends Screen {
         searchBox.setPlaceholder(Text.literal("Search items..."));
 
         // Populate lists with data
+        lastDataRevision = HoarderDataCache.getRevision();
         populateLists();
 
         addDrawable(titleWidget);
@@ -71,7 +76,9 @@ public class HoarderMenuScreen extends Screen {
     private void populateLists() {
         if (client == null) return;
 
-        HoarderData hoarderData = XirosBorderBlock.hoarderData;
+        // Use cached client-side data instead of server data
+        var foundItems = HoarderDataCache.getFoundItems();
+        Set<String> foundItemsSet = new HashSet<>(foundItems);
         String searchQuery = searchBox.getText().toLowerCase();
 
         // Clear existing entries
@@ -79,7 +86,7 @@ public class HoarderMenuScreen extends Screen {
         missingItemsListWidget.clearEntries();
 
         // Add found items
-        for (String foundItemId : hoarderData.foundItems()) {
+        for (String foundItemId : foundItems) {
             try {
                 Identifier id = new Identifier(foundItemId);
                 var item = Registries.ITEM.get(id);
@@ -94,7 +101,7 @@ public class HoarderMenuScreen extends Screen {
         // Add missing items (all items not in foundItems)
         for (var entry : Registries.ITEM.getEntrySet()) {
             String itemId = entry.getKey().getValue().toString();
-            if (!hoarderData.foundItems().contains(itemId) && matchesSearch(entry.getValue(), itemId, searchQuery)) {
+            if (!foundItemsSet.contains(itemId) && matchesSearch(entry.getValue(), itemId, searchQuery)) {
                 missingItemsListWidget.addBlockEntry(new ItemEntry(new ItemStack(entry.getValue()), client.textRenderer));
             }
         }
@@ -131,6 +138,17 @@ public class HoarderMenuScreen extends Screen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        if (searchBox == null) {
+            super.render(context, mouseX, mouseY, delta);
+            return;
+        }
+
+        long currentRevision = HoarderDataCache.getRevision();
+        if (currentRevision != lastDataRevision) {
+            lastDataRevision = currentRevision;
+            populateLists();
+        }
+
         // Check if search box text has changed
         String currentSearch = searchBox.getText();
         if (!currentSearch.equals(lastSearchQuery)) {

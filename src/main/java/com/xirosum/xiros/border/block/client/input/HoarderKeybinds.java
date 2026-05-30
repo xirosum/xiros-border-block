@@ -1,8 +1,10 @@
 package com.xirosum.xiros.border.block.client.input;
 
+import com.xirosum.xiros.border.block.network.RequestHoarderDataPacket;
 import com.xirosum.xiros.border.block.screen.hoarder.HoarderMenuScreen;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
@@ -30,6 +32,10 @@ public final class HoarderKeybinds {
                     continue;
                 }
 
+                // Request the hoarder data from the server
+                ClientPlayNetworking.send(new RequestHoarderDataPacket());
+                
+                // Open the screen after requesting data
                 client.setScreen(new HoarderMenuScreen(Text.translatable(HOARDER_MENU_TITLE)));
             }
         });
