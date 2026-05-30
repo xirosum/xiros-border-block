@@ -16,6 +16,8 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.minecraft.item.Items;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.PersistentStateManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +35,7 @@ public class XirosBorderBlock implements ModInitializer {
     public static HoarderData hoarderData;
 	public static Hoarder hoarder;
 	public static HoarderScoreBoard hoarderScoreBoard;
+	public static MinecraftServer serverShared;
 
     @Override
 	public void onInitialize() {
@@ -52,6 +55,7 @@ public class XirosBorderBlock implements ModInitializer {
 		ServerNetworkHandler.registerHandlers();
 
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+			serverShared = server;
 			PersistentStateManager stateManager = server.getOverworld().getPersistentStateManager();
 			hoarderData = HoarderData.loadFromPersistentStateManager(stateManager);
 			hoarder = new Hoarder();

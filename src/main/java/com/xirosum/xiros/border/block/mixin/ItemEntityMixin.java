@@ -43,6 +43,6 @@ public class ItemEntityMixin {
         }
 
         XirosBorderBlock.LOGGER.debug("Player {} collided with item entity {} with item stack {}", player.getName(), itemEntity.getUuidAsString(), itemStack.toString());
-        XirosBorderBlock.hoarder.registerNewItem(player, itemStack, itemEntity.getWorld());
+        XirosBorderBlock.hoarder.registerNewItem(player, itemStack);
     }
 }

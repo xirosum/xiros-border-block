@@ -18,7 +18,7 @@ public class Hoarder {
     private final int BORDER_INCREASE_AMOUNT = 2;
 
     // one way to do it might be useful to use callbacks for block mined or entered inventory
-    public void registerNewItem(PlayerEntity player, ItemStack itemStack, World world) {
+    public void registerNewItem(PlayerEntity player, ItemStack itemStack) {
         if (!XirosBorderBlock.hoarderData.isActive()) {
             return;
         }
@@ -36,7 +36,7 @@ public class Hoarder {
 
         displayFoundItems(player, itemIdStr);
 
-        increaseBorder(world, itemIdStr);
+        increaseBorder(player.getWorld(), itemIdStr);
 
         if (XirosBorderBlock.hoarderScoreBoard.scoreboardActive()) {
             XirosBorderBlock.hoarderScoreBoard.updatePlayerScore(player.getName().getString(), data.playerItemCounts().get(player.getUuidAsString()));
@@ -77,7 +77,7 @@ public class Hoarder {
     }
 
     private void displayToAllPlayers(PlayerEntity player, Text text) {
-        Objects.requireNonNull(player.getServer()).getPlayerManager().broadcast(text, false);
+       XirosBorderBlock.serverShared.getPlayerManager().broadcast(text, false);
     }
 
 }
