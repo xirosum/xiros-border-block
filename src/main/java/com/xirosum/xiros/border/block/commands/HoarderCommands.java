@@ -18,7 +18,7 @@ public class HoarderCommands{
                                     XirosBorderBlock.hoarder.clear();
                                     return 1;
                                 }))
-                        .then(CommandManager.literal("completePercentage")
+                        .then(CommandManager.literal("completion-rate")
                                 .executes(context -> {
                                     //calculate how many blocks available and how many have been found
                                     XirosBorderBlock.hoarder.displayCompletion(context.getSource().getPlayer());
@@ -37,12 +37,6 @@ public class HoarderCommands{
                                     return 1;
                                 })
                         ).then(
-                                CommandManager.literal("score")
-                                        .executes(context -> {
-                                            XirosBorderBlock.hoarder.displayScore(context.getSource().getPlayer());
-                                            return 1;
-                                        })
-                        ).then(
                                 CommandManager.literal("scoreboard")
                                         .then(
                                                 CommandManager.literal("track")
@@ -56,7 +50,16 @@ public class HoarderCommands{
                                                             if (!XirosBorderBlock.hoarderData.isActive()) {
                                                                 return 0;
                                                             }
-                                                            XirosBorderBlock.hoarderScoreBoard.setScoreboardDisplayPosition();
+                                                            XirosBorderBlock.hoarderScoreBoard.setScoreboardDisplayPosition(1);
+                                                            return 1;
+                                                        })
+                                        ).then(
+                                                CommandManager.literal("hide")
+                                                        .executes(context -> {
+                                                            if (!XirosBorderBlock.hoarderData.isActive()) {
+                                                                return 0;
+                                                            }
+                                                            XirosBorderBlock.hoarderScoreBoard.setScoreboardDisplayPosition(-1);
                                                             return 1;
                                                         })
                                         )

@@ -7,28 +7,28 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.Text;
 
 public class HoarderScoreBoard {
-    private MinecraftServer server;
+    private final MinecraftServer SERVER;
     private final String OBJECTIVE_NAME = "hoarder_score";
     private final String DISPLAY_NAME = "Hoarder Score";
 
-    public HoarderScoreBoard(MinecraftServer server) {
-        this.server = server;
+    public HoarderScoreBoard(MinecraftServer SERVER) {
+        this.SERVER = SERVER;
     }
 
     public void addHoarderToScoreboard() {
-        server.execute(() -> {
-            if (server.getScoreboard().getObjective(OBJECTIVE_NAME) == null) {
-                server.getScoreboard().addObjective(OBJECTIVE_NAME, ScoreboardCriterion.DUMMY, Text.of(DISPLAY_NAME), ScoreboardCriterion.RenderType.INTEGER);
+        SERVER.execute(() -> {
+            if (SERVER.getScoreboard().getObjective(OBJECTIVE_NAME) == null) {
+                SERVER.getScoreboard().addObjective(OBJECTIVE_NAME, ScoreboardCriterion.DUMMY, Text.of(DISPLAY_NAME), ScoreboardCriterion.RenderType.INTEGER);
             }
         });
     }
 
     public void updatePlayerScore(String playerName, int score) {
-        server.execute(() -> {
-            if (server.getScoreboard().getObjective(OBJECTIVE_NAME) != null) {
-                ScoreboardPlayerScore playerScore = server.getScoreboard().getPlayerScore(playerName, server.getScoreboard().getObjective(OBJECTIVE_NAME));
+        SERVER.execute(() -> {
+            if (SERVER.getScoreboard().getObjective(OBJECTIVE_NAME) != null) {
+                ScoreboardPlayerScore playerScore = SERVER.getScoreboard().getPlayerScore(playerName, SERVER.getScoreboard().getObjective(OBJECTIVE_NAME));
                 playerScore.setScore(score);
-                server.getScoreboard().updateScore(playerScore);
+                SERVER.getScoreboard().updateScore(playerScore);
 
                 XirosBorderBlock.LOGGER.info("Updated score for player {}: {}", playerName, score);
             }
@@ -36,11 +36,11 @@ public class HoarderScoreBoard {
     }
 
     public boolean scoreboardActive() {
-        return server.getScoreboard().getObjective(OBJECTIVE_NAME) != null;
+        return SERVER.getScoreboard().getObjective(OBJECTIVE_NAME) != null;
     }
 
-    public void setScoreboardDisplayPosition() {
-        server.getScoreboard().setObjectiveSlot(1, server.getScoreboard().getObjective(OBJECTIVE_NAME)); // 1 is the sidebar
+    public void setScoreboardDisplayPosition(int slot) {
+        SERVER.getScoreboard().setObjectiveSlot(slot, SERVER.getScoreboard().getObjective(OBJECTIVE_NAME)); // 1 is the sidebar
     }
 
 }
