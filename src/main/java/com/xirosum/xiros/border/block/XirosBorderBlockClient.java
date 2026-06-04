@@ -1,3 +1,4 @@
+/* (C)2026 */
 package com.xirosum.xiros.border.block;
 
 import com.xirosum.xiros.border.block.block.entity.ModBlockEntities;
@@ -13,10 +14,12 @@ import net.minecraft.client.gui.screen.ingame.HandledScreens;
 public class XirosBorderBlockClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        HandledScreens.register(ModScreenHandlers.BORDER_BLOCK_SCREEN_HANDLER, BorderBlockScreen::new);
-        BlockEntityRendererRegistry.register(ModBlockEntities.CORRUPTED_BORDER_BLOCK_ENTITY, context -> new CorruptedBorderBlockRenderer());
+        HandledScreens.register(
+                ModScreenHandlers.BORDER_BLOCK_SCREEN_HANDLER, BorderBlockScreen::new);
+        BlockEntityRendererRegistry.register(
+                ModBlockEntities.CORRUPTED_BORDER_BLOCK_ENTITY,
+                context -> new CorruptedBorderBlockRenderer());
         HoarderKeybinds.register();
         ClientNetworkHandler.registerHandlers();
     }
 }
-

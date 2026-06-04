@@ -1,32 +1,40 @@
+/* (C)2026 */
 package com.xirosum.xiros.border.block.logic.persistance;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.xirosum.xiros.border.block.XirosBorderBlock;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.world.PersistentState;
-import net.minecraft.world.PersistentStateManager;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.world.PersistentState;
+import net.minecraft.world.PersistentStateManager;
 
 public class HoarderData extends PersistentState {
 
     private final ArrayList<String> foundItems;
     private final Map<String, Integer> playerItemCounts;
     private boolean active;
-    private static final Codec<HoarderData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.STRING.listOf().fieldOf("foundItems").forGetter(HoarderData::foundItems),
-            Codec.unboundedMap(Codec.STRING, Codec.INT).fieldOf("playerItemCounts").forGetter(HoarderData::playerItemCounts),
-            Codec.BOOL.fieldOf("active").forGetter(HoarderData::isActive)
-        ).apply(instance, HoarderData::new
-    ));
+    private static final Codec<HoarderData> CODEC =
+            RecordCodecBuilder.create(
+                    instance ->
+                            instance.group(
+                                            Codec.STRING
+                                                    .listOf()
+                                                    .fieldOf("foundItems")
+                                                    .forGetter(HoarderData::foundItems),
+                                            Codec.unboundedMap(Codec.STRING, Codec.INT)
+                                                    .fieldOf("playerItemCounts")
+                                                    .forGetter(HoarderData::playerItemCounts),
+                                            Codec.BOOL
+                                                    .fieldOf("active")
+                                                    .forGetter(HoarderData::isActive))
+                                    .apply(instance, HoarderData::new));
     private static final String ID = "hoarder_data";
 
     public HoarderData() {
@@ -35,7 +43,8 @@ public class HoarderData extends PersistentState {
         active = false;
     }
 
-    public HoarderData(List<String> foundItems, Map<String, Integer> playerItemCounts, boolean active) {
+    public HoarderData(
+            List<String> foundItems, Map<String, Integer> playerItemCounts, boolean active) {
         this.foundItems = new ArrayList<>();
         this.foundItems.addAll(foundItems);
         this.playerItemCounts = new HashMap<>();
@@ -87,7 +96,8 @@ public class HoarderData extends PersistentState {
 
         active = true;
         markDirty();
-        XirosBorderBlock.LOGGER.info("Hoarder activated, players can now find items to increase the world border size");
+        XirosBorderBlock.LOGGER.info(
+                "Hoarder activated, players can now find items to increase the world border size");
     }
 
     public void deactivateHoarder() {
@@ -102,7 +112,9 @@ public class HoarderData extends PersistentState {
 
     @Override
     public NbtCompound writeNbt(NbtCompound nbt) {
-        nbt.put(ID, CODEC.encodeStart(NbtOps.INSTANCE, this).getOrThrow(false, HoarderData::logError));
+        nbt.put(
+                ID,
+                CODEC.encodeStart(NbtOps.INSTANCE, this).getOrThrow(false, HoarderData::logError));
         return nbt;
     }
 
@@ -119,11 +131,10 @@ public class HoarderData extends PersistentState {
         if (parsed.isPresent()) {
             HoarderData loaded = parsed.get();
             XirosBorderBlock.LOGGER.info(
-                "Loaded hoarder data: foundItems={}, players={}, active={}",
-                loaded.foundItems().size(),
-                loaded.playerItemCounts().size(),
-                loaded.isActive()
-            );
+                    "Loaded hoarder data: foundItems={}, players={}, active={}",
+                    loaded.foundItems().size(),
+                    loaded.playerItemCounts().size(),
+                    loaded.isActive());
             return loaded;
         }
 
@@ -134,6 +145,4 @@ public class HoarderData extends PersistentState {
     private static void logError(String error) {
         System.err.println("Error encoding HoarderData: " + error);
     }
-
-
 }

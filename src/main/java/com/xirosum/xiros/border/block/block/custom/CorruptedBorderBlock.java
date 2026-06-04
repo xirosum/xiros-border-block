@@ -1,3 +1,4 @@
+/* (C)2026 */
 package com.xirosum.xiros.border.block.block.custom;
 
 import com.xirosum.xiros.border.block.block.entity.ModBlockEntities;
@@ -29,13 +30,17 @@ public class CorruptedBorderBlock extends BaseBorderBlock implements BlockEntity
     }
 
     @Override
-    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+    public VoxelShape getOutlineShape(
+            BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         return Block.createCuboidShape(0, 0, 0, 18, 16, 16);
     }
 
     @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, ModBlockEntities.CORRUPTED_BORDER_BLOCK_ENTITY, (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1));
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(
+            World world, BlockState state, BlockEntityType<T> type) {
+        return checkType(
+                type,
+                ModBlockEntities.CORRUPTED_BORDER_BLOCK_ENTITY,
+                (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1));
     }
-
 }

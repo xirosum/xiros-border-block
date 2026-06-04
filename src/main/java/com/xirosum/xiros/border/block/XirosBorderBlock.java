@@ -1,3 +1,4 @@
+/* (C)2026 */
 package com.xirosum.xiros.border.block;
 
 import com.xirosum.xiros.border.block.block.ModBlocks;
@@ -12,65 +13,63 @@ import com.xirosum.xiros.border.block.network.ServerNetworkHandler;
 import com.xirosum.xiros.border.block.screen.ModScreenHandlers;
 import com.xirosum.xiros.border.block.utils.RewardLootTable;
 import net.fabricmc.api.ModInitializer;
-
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.minecraft.item.Items;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.PersistentStateManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class XirosBorderBlock implements ModInitializer {
-	public static final String MOD_ID = "xiros-border-block";
+    public static final String MOD_ID = "xiros-border-block";
 
-	// This logger is used to write text to the console and the log file.
-	// It is considered best practice to use your mod id as the logger's name.
-	// That way, it's clear which mod wrote info, warnings, and errors.
-	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    // This logger is used to write text to the console and the log file.
+    // It is considered best practice to use your mod id as the logger's name.
+    // That way, it's clear which mod wrote info, warnings, and errors.
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-	public static RewardLootTable rewardLootTable = new RewardLootTable();
+    public static RewardLootTable rewardLootTable = new RewardLootTable();
 
     public static HoarderData hoarderData;
-	public static Hoarder hoarder;
-	public static HoarderScoreBoard hoarderScoreBoard;
-	public static MinecraftServer serverShared;
+    public static Hoarder hoarder;
+    public static HoarderScoreBoard hoarderScoreBoard;
+    public static MinecraftServer serverShared;
 
     @Override
-	public void onInitialize() {
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
+    public void onInitialize() {
+        // This code runs as soon as Minecraft is in a mod-load-ready state.
+        // However, some things (like resources) may still be uninitialized.
+        // Proceed with mild caution.
 
-		// Load config early
-		BorderBlockConfigAccess.bootstrap();
+        // Load config early
+        BorderBlockConfigAccess.bootstrap();
 
-		ModItems.registerModItems();
-		ModBlocks.registerModBlocks();
-		ModBlockEntities.registerBlockEntities();
-		ModScreenHandlers.registerScreenHandlers();
+        ModItems.registerModItems();
+        ModBlocks.registerModBlocks();
+        ModBlockEntities.registerBlockEntities();
+        ModScreenHandlers.registerScreenHandlers();
 
-		// Register server network handlers
-		ServerNetworkHandler.registerHandlers();
+        // Register server network handlers
+        ServerNetworkHandler.registerHandlers();
 
-		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-			serverShared = server;
-			PersistentStateManager stateManager = server.getOverworld().getPersistentStateManager();
-			hoarderData = HoarderData.loadFromPersistentStateManager(stateManager);
-			hoarder = new Hoarder();
+        ServerLifecycleEvents.SERVER_STARTED.register(
+                server -> {
+                    serverShared = server;
+                    PersistentStateManager stateManager =
+                            server.getOverworld().getPersistentStateManager();
+                    hoarderData = HoarderData.loadFromPersistentStateManager(stateManager);
+                    hoarder = new Hoarder();
 
-			hoarderScoreBoard = new HoarderScoreBoard(server);
-		});
+                    hoarderScoreBoard = new HoarderScoreBoard(server);
+                });
 
-		ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
-			if (hoarderData != null) {
-				hoarderData.markDirty();
-			}
-		});
+        ServerLifecycleEvents.SERVER_STOPPING.register(
+                server -> {
+                    if (hoarderData != null) {
+                        hoarderData.markDirty();
+                    }
+                });
 
-		CommandRegistrationCallback.EVENT.register(
-				HoarderCommands::register
-		);
-	}
+        CommandRegistrationCallback.EVENT.register(HoarderCommands::register);
+    }
 }

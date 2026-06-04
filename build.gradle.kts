@@ -1,5 +1,6 @@
 plugins {
 	id("net.fabricmc.fabric-loom-remap")
+	id("com.diffplug.spotless") version "8.6.0"
 	`maven-publish`
 }
 
@@ -94,5 +95,34 @@ publishing {
 		// Notice: This block does NOT have the same function as the block in the top level.
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
+	}
+}
+
+var YEAR = "2026" // default year for license header, will be replaced by git history if "license" is applied to a format
+
+spotless {
+//	ratchetFrom ("origin/master")
+
+	format("misc") {
+	// define the files to apply `misc` to
+	target("*.gradle", ".gitattributes", ".gitignore")
+
+	// define the steps to apply to those files
+	trimTrailingWhitespace()
+	leadingSpacesToTabs() // or leadingTabsToSpaces. Takes an integer argument if you don't like 4
+	endWithNewline()
+	}
+
+	java {
+		// don't need to set target, it is inferred from java
+
+		// apply a specific flavor of google-java-format
+		googleJavaFormat("1.35.0").aosp().reflowLongStrings().skipJavadocFormatting()
+		// fix formatting of type annotations
+		formatAnnotations()
+		// make sure every file has the following copyright header.
+		// optionally, Spotless can set copyright years by digging
+		// through git history (see "license" section below)
+		licenseHeader("/* (C)$YEAR */")
 	}
 }

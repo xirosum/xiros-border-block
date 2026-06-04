@@ -1,9 +1,12 @@
+/* (C)2026 */
 package com.xirosum.xiros.border.block.screen.hoarder;
 
 import com.xirosum.xiros.border.block.XirosBorderBlock;
 import com.xirosum.xiros.border.block.client.HoarderDataCache;
 import com.xirosum.xiros.border.block.screen.hoarder.widgets.ItemEntry;
 import com.xirosum.xiros.border.block.screen.hoarder.widgets.ItemListWidget;
+import java.util.HashSet;
+import java.util.Set;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -13,9 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class HoarderMenuScreen extends Screen {
     private ItemListWidget foundItemsListWidget;
@@ -30,7 +30,6 @@ public class HoarderMenuScreen extends Screen {
         super(title);
     }
 
-
     @Override
     protected void init() {
         super.init();
@@ -39,13 +38,34 @@ public class HoarderMenuScreen extends Screen {
             return;
         }
 
-        TextWidget titleWidget = new TextWidget(width/2, 20, width/20, height/40, Text.literal("Hoarder Menu"), minecraftClient.textRenderer);
+        TextWidget titleWidget =
+                new TextWidget(
+                        width / 2,
+                        20,
+                        width / 20,
+                        height / 40,
+                        Text.literal("Hoarder Menu"),
+                        minecraftClient.textRenderer);
         titleWidget.alignCenter();
 
         // These will be updated dynamically with counts
-        TextWidget foundBlocksTitleWidget = new TextWidget(width/4, 40, width/20, height/40, Text.literal("Found Items"), minecraftClient.textRenderer);
+        TextWidget foundBlocksTitleWidget =
+                new TextWidget(
+                        width / 4,
+                        40,
+                        width / 20,
+                        height / 40,
+                        Text.literal("Found Items"),
+                        minecraftClient.textRenderer);
         titleWidget.alignCenter();
-        TextWidget missingBlocksTitleWidget = new TextWidget( 3 * (width/4), 40, width/20, height/40, Text.literal("Missing Items"), minecraftClient.textRenderer);
+        TextWidget missingBlocksTitleWidget =
+                new TextWidget(
+                        3 * (width / 4),
+                        40,
+                        width / 20,
+                        height / 40,
+                        Text.literal("Missing Items"),
+                        minecraftClient.textRenderer);
         titleWidget.alignCenter();
 
         int listWidth = (width / 2);
@@ -54,10 +74,33 @@ public class HoarderMenuScreen extends Screen {
         int listTop = 60;
         int searchBoxHeight = 20;
 
-        foundItemsListWidget = new ItemListWidget(minecraftClient, leftListX, listWidth, height, listTop, height - searchBoxHeight - 10, 26);
-        missingItemsListWidget = new ItemListWidget(minecraftClient, rightListX, listWidth, height, listTop, height - searchBoxHeight - 10, 26);
+        foundItemsListWidget =
+                new ItemListWidget(
+                        minecraftClient,
+                        leftListX,
+                        listWidth,
+                        height,
+                        listTop,
+                        height - searchBoxHeight - 10,
+                        26);
+        missingItemsListWidget =
+                new ItemListWidget(
+                        minecraftClient,
+                        rightListX,
+                        listWidth,
+                        height,
+                        listTop,
+                        height - searchBoxHeight - 10,
+                        26);
 
-        searchBox = new TextFieldWidget(minecraftClient.textRenderer, width / 4 - 50, height - searchBoxHeight - 5, 100, searchBoxHeight, Text.literal("Search"));
+        searchBox =
+                new TextFieldWidget(
+                        minecraftClient.textRenderer,
+                        width / 4 - 50,
+                        height - searchBoxHeight - 5,
+                        100,
+                        searchBoxHeight,
+                        Text.literal("Search"));
         searchBox.setMaxLength(100);
         searchBox.setPlaceholder(Text.literal("Search items..."));
 
@@ -91,7 +134,8 @@ public class HoarderMenuScreen extends Screen {
                 Identifier id = new Identifier(foundItemId);
                 var item = Registries.ITEM.get(id);
                 if (matchesSearch(item, foundItemId, searchQuery)) {
-                    foundItemsListWidget.addBlockEntry(new ItemEntry(new ItemStack(item), client.textRenderer));
+                    foundItemsListWidget.addBlockEntry(
+                            new ItemEntry(new ItemStack(item), client.textRenderer));
                 }
             } catch (Exception e) {
                 XirosBorderBlock.LOGGER.warn("Failed to load found item: {}", foundItemId, e);
@@ -101,8 +145,10 @@ public class HoarderMenuScreen extends Screen {
         // Add missing items (all items not in foundItems)
         for (var entry : Registries.ITEM.getEntrySet()) {
             String itemId = entry.getKey().getValue().toString();
-            if (!foundItemsSet.contains(itemId) && matchesSearch(entry.getValue(), itemId, searchQuery)) {
-                missingItemsListWidget.addBlockEntry(new ItemEntry(new ItemStack(entry.getValue()), client.textRenderer));
+            if (!foundItemsSet.contains(itemId)
+                    && matchesSearch(entry.getValue(), itemId, searchQuery)) {
+                missingItemsListWidget.addBlockEntry(
+                        new ItemEntry(new ItemStack(entry.getValue()), client.textRenderer));
             }
         }
 
@@ -129,10 +175,11 @@ public class HoarderMenuScreen extends Screen {
 
         // Search by mod name
         String namespace = new Identifier(itemId).getNamespace();
-        String modName = FabricLoader.getInstance()
-            .getModContainer(namespace)
-            .map(container -> container.getMetadata().getName())
-            .orElse(namespace);
+        String modName =
+                FabricLoader.getInstance()
+                        .getModContainer(namespace)
+                        .map(container -> container.getMetadata().getName())
+                        .orElse(namespace);
         return modName.toLowerCase().contains(searchQuery);
     }
 
@@ -161,9 +208,14 @@ public class HoarderMenuScreen extends Screen {
 
         // Draw item counts next to titles
         if (client != null) {
-            context.drawTextWithShadow(client.textRenderer, "(" + foundCount + ")", width / 4 + 30, 50, 0xFFFFFF);
-            context.drawTextWithShadow(client.textRenderer, "(" + missingCount + ")", 3 * width / 4 + 30, 50, 0xFFFFFF);
+            context.drawTextWithShadow(
+                    client.textRenderer, "(" + foundCount + ")", width / 4 + 30, 50, 0xFFFFFF);
+            context.drawTextWithShadow(
+                    client.textRenderer,
+                    "(" + missingCount + ")",
+                    3 * width / 4 + 30,
+                    50,
+                    0xFFFFFF);
         }
     }
-
 }

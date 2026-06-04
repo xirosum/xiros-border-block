@@ -1,13 +1,13 @@
+/* (C)2026 */
 package com.xirosum.xiros.border.block.utils;
 
 import com.xirosum.xiros.border.block.config.BorderBlockConfigAccess;
-
 import java.util.List;
 import java.util.Random;
 
-public record Reward (List<String> rewards, int weight) {
+public record Reward(List<String> rewards, int weight) {
 
-    public String getReward () {
+    public String getReward() {
         if (rewards.isEmpty()) {
             return BorderBlockConfigAccess.get().defaultReward;
         }

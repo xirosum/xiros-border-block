@@ -1,3 +1,4 @@
+/* (C)2026 */
 package com.xirosum.xiros.border.block.screen.hoarder.widgets;
 
 import net.minecraft.client.MinecraftClient;
@@ -10,7 +11,14 @@ public class ItemListWidget extends EntryListWidget<ItemEntry> {
     private final int leftX;
     private final int listWidth;
 
-    public ItemListWidget(MinecraftClient client, int x, int width, int height, int top, int bottom, int itemHeight) {
+    public ItemListWidget(
+            MinecraftClient client,
+            int x,
+            int width,
+            int height,
+            int top,
+            int bottom,
+            int itemHeight) {
         super(client, width, height, top, bottom, itemHeight);
         this.leftX = x;
         this.listWidth = width;
@@ -18,9 +26,7 @@ public class ItemListWidget extends EntryListWidget<ItemEntry> {
     }
 
     @Override
-    public void appendNarrations(NarrationMessageBuilder builder) {
-
-    }
+    public void appendNarrations(NarrationMessageBuilder builder) {}
 
     public void addBlockEntry(ItemEntry entry) {
         this.addEntry(entry);
@@ -41,5 +47,4 @@ public class ItemListWidget extends EntryListWidget<ItemEntry> {
         // Reserve a little room so row content does not collide with the scrollbar.
         return this.listWidth - ROW_HORIZONTAL_PADDING;
     }
-
 }

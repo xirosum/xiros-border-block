@@ -1,10 +1,14 @@
+/* (C)2026 */
 package com.xirosum.xiros.border.block.block.entity;
+
+import static net.minecraft.item.Items.DIAMOND;
 
 import com.xirosum.xiros.border.block.XirosBorderBlock;
 import com.xirosum.xiros.border.block.item.ModItems;
 import com.xirosum.xiros.border.block.screen.BorderBlockScreenHandler;
 import com.xirosum.xiros.border.block.utils.BorderBlockStage;
 import com.xirosum.xiros.border.block.utils.StageUtil;
+import java.util.List;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -30,11 +34,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.border.WorldBorder;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
-import static net.minecraft.item.Items.DIAMOND;
-
-public class BaseBorderBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
+public class BaseBorderBlockEntity extends BlockEntity
+        implements ExtendedScreenHandlerFactory, ImplementedInventory {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(2, ItemStack.EMPTY);
 
     // input will be for the desired item hopefully soon will be able to make it configurable
@@ -56,33 +57,33 @@ public class BaseBorderBlockEntity extends BlockEntity implements ExtendedScreen
     public BaseBorderBlockEntity(BlockEntityType type, BlockPos pos, BlockState state) {
         super(type, pos, state);
 
-        this.propertyDelegate = new PropertyDelegate() {
-            @Override
-            public int get(int index) {
-                return switch (index) {
-                    case 0 -> BaseBorderBlockEntity.this.progress;
-                    case 1 -> BaseBorderBlockEntity.this.maxProgress;
-                    default -> 0;
+        this.propertyDelegate =
+                new PropertyDelegate() {
+                    @Override
+                    public int get(int index) {
+                        return switch (index) {
+                            case 0 -> BaseBorderBlockEntity.this.progress;
+                            case 1 -> BaseBorderBlockEntity.this.maxProgress;
+                            default -> 0;
+                        };
+                    }
+
+                    @Override
+                    public void set(int index, int value) {
+                        switch (index) {
+                            case 0 -> BaseBorderBlockEntity.this.progress = value;
+                            case 1 -> BaseBorderBlockEntity.this.maxProgress = value;
+                        }
+                    }
+
+                    @Override
+                    public int size() {
+                        return 2;
+                    }
                 };
-            }
-
-            @Override
-            public void set(int index, int value) {
-                switch (index) {
-                    case 0 -> BaseBorderBlockEntity.this.progress = value;
-                    case 1 -> BaseBorderBlockEntity.this.maxProgress = value;
-                }
-            }
-
-            @Override
-            public int size() {
-                return 2;
-            }
-        };
 
         BorderBlockStage stage = StageUtil.getStage(1);
     }
-
 
     @Override
     public DefaultedList<ItemStack> getItems() {
@@ -90,7 +91,8 @@ public class BaseBorderBlockEntity extends BlockEntity implements ExtendedScreen
     }
 
     @Override
-    public void writeScreenOpeningData(ServerPlayerEntity serverPlayerEntity, PacketByteBuf packetByteBuf) {
+    public void writeScreenOpeningData(
+            ServerPlayerEntity serverPlayerEntity, PacketByteBuf packetByteBuf) {
         packetByteBuf.writeBlockPos(this.pos);
     }
 
@@ -116,7 +118,8 @@ public class BaseBorderBlockEntity extends BlockEntity implements ExtendedScreen
     }
 
     @Override
-    public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+    public @Nullable ScreenHandler createMenu(
+            int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         return new BorderBlockScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
     }
 
@@ -140,12 +143,12 @@ public class BaseBorderBlockEntity extends BlockEntity implements ExtendedScreen
             initComplete = true;
         }
 
-        if(isOutputEmptyOrReceivable()) {
-            if(this.hasRecipe()) {
+        if (isOutputEmptyOrReceivable()) {
+            if (this.hasRecipe()) {
                 this.increaseCraftProgress();
                 markDirty(world, pos, state);
 
-                if(hasCraftingFinished()) {
+                if (hasCraftingFinished()) {
                     increaseBorderSize(world);
 
                     this.craftItem();
@@ -167,7 +170,9 @@ public class BaseBorderBlockEntity extends BlockEntity implements ExtendedScreen
 
         ItemStack result = new ItemStack(outputItem);
 
-        this.setStack(OUTPUT_SLOT,  new ItemStack(result.getItem(), getOutputStack().getCount() + result.getCount()));
+        this.setStack(
+                OUTPUT_SLOT,
+                new ItemStack(result.getItem(), getOutputStack().getCount() + result.getCount()));
     }
 
     private boolean hasCraftingFinished() {
@@ -179,11 +184,15 @@ public class BaseBorderBlockEntity extends BlockEntity implements ExtendedScreen
     }
 
     private boolean hasRecipe() {
-        // Barrier block for if information is lost, and we need to reset without restarting the server.
+        // Barrier block for if information is lost, and we need to reset without restarting the
+        // server.
         ItemStack result = new ItemStack(outputItem);
-        boolean hasInput = List.of(inputItem, Items.BARRIER).contains(getStack(INPUT_SLOT).getItem());
+        boolean hasInput =
+                List.of(inputItem, Items.BARRIER).contains(getStack(INPUT_SLOT).getItem());
 
-        return hasInput && canInsertAmountIntoOutputSlot(result) && canInsertItemIntoOutputSlot(result.getItem());
+        return hasInput
+                && canInsertAmountIntoOutputSlot(result)
+                && canInsertItemIntoOutputSlot(result.getItem());
     }
 
     private boolean canInsertItemIntoOutputSlot(Item item) {
@@ -195,7 +204,8 @@ public class BaseBorderBlockEntity extends BlockEntity implements ExtendedScreen
     }
 
     private boolean isOutputEmptyOrReceivable() {
-        return getOutputStack().isEmpty() || getOutputStack().getCount() < getOutputStack().getMaxCount();
+        return getOutputStack().isEmpty()
+                || getOutputStack().getCount() < getOutputStack().getMaxCount();
     }
 
     private ItemStack getOutputStack() {
@@ -203,27 +213,31 @@ public class BaseBorderBlockEntity extends BlockEntity implements ExtendedScreen
     }
 
     private void increaseBorderSize(World world) {
-        if(world == null) {return;}
+        if (world == null) {
+            return;
+        }
         WorldBorder border = world.getWorldBorder();
 
         // if there is no world border do nothing here
-        if(border.getSize() > 30_000_000) {
+        if (border.getSize() > 30_000_000) {
             return;
         }
         border.setSize(border.getSize() + 1);
 
         // running it everytime to detect if border was changed by command
         initData(world);
-
     }
 
-    private void initData (World world) {
-        if (world == null) {return;}
+    private void initData(World world) {
+        if (world == null) {
+            return;
+        }
 
-        BorderBlockStage  stage = StageUtil.getStage((int) world.getWorldBorder().getSize());
+        BorderBlockStage stage = StageUtil.getStage((int) world.getWorldBorder().getSize());
         endingBorderSize = stage.endingBorderSize();
         inputItem = Registries.ITEM.get(new Identifier(stage.requiredItem()));
 
-        XirosBorderBlock.LOGGER.debug("Setting endingBorderSize: {} and inputItem: {}", endingBorderSize, inputItem);
+        XirosBorderBlock.LOGGER.debug(
+                "Setting endingBorderSize: {} and inputItem: {}", endingBorderSize, inputItem);
     }
 }

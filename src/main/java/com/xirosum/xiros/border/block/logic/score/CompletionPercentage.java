@@ -1,3 +1,4 @@
+/* (C)2026 */
 package com.xirosum.xiros.border.block.logic.score;
 
 import com.xirosum.xiros.border.block.XirosBorderBlock;
@@ -14,13 +15,15 @@ public class CompletionPercentage {
 
     private static Text completionText(int foundBlocks, int totalBlocks) {
         double percentage = calculate(foundBlocks, totalBlocks);
-        return Text.of(String.format("Completion: %.2f%% (%d/%d)", percentage, foundBlocks, totalBlocks));
+        return Text.of(
+                String.format("Completion: %.2f%% (%d/%d)", percentage, foundBlocks, totalBlocks));
     }
 
     public static Text getCompletion() {
         long items_count = Registries.ITEM.stream().count();
 
-        double percentage = calculate(XirosBorderBlock.hoarderData.foundItems().size(), items_count);
+        double percentage =
+                calculate(XirosBorderBlock.hoarderData.foundItems().size(), items_count);
 
         return completionText(XirosBorderBlock.hoarderData.foundItems().size(), (int) items_count);
     }

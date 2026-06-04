@@ -1,3 +1,4 @@
+/* (C)2026 */
 package com.xirosum.xiros.border.block.client;
 
 import java.util.ArrayList;
@@ -11,7 +12,10 @@ public class HoarderDataCache {
     private static boolean active = false;
     private static long revision = 0L;
 
-    public static synchronized void update(List<String> newFoundItems, Map<String, Integer> newPlayerItemCounts, boolean newActive) {
+    public static synchronized void update(
+            List<String> newFoundItems,
+            Map<String, Integer> newPlayerItemCounts,
+            boolean newActive) {
         foundItems = new ArrayList<>(newFoundItems);
         playerItemCounts = new HashMap<>(newPlayerItemCounts);
         active = newActive;
@@ -41,5 +45,3 @@ public class HoarderDataCache {
         revision++;
     }
 }
-
-

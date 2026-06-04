@@ -1,3 +1,4 @@
+/* (C)2026 */
 package com.xirosum.xiros.border.block.block.geo.block.entity;
 
 import com.xirosum.xiros.border.block.block.entity.BaseBorderBlockEntity;
@@ -15,14 +16,15 @@ public class CorruptedBorderBlockEntity extends BaseBorderBlockEntity implements
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-
     public CorruptedBorderBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.CORRUPTED_BORDER_BLOCK_ENTITY, pos, state);
     }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, state -> state.setAndContinue(DefaultAnimations.IDLE)));
+        controllers.add(
+                new AnimationController<>(
+                        this, state -> state.setAndContinue(DefaultAnimations.IDLE)));
     }
 
     @Override

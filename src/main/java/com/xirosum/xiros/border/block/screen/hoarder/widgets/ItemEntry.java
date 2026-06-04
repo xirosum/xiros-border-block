@@ -1,5 +1,7 @@
+/* (C)2026 */
 package com.xirosum.xiros.border.block.screen.hoarder.widgets;
 
+import java.util.List;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -10,8 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-
-import java.util.List;
 
 public class ItemEntry extends ElementListWidget.Entry<ItemEntry> {
     private final ItemStack stack;
@@ -27,15 +27,26 @@ public class ItemEntry extends ElementListWidget.Entry<ItemEntry> {
 
         Identifier itemId = Registries.ITEM.getId(this.stack.getItem());
         String namespace = itemId.getNamespace();
-        String modName = FabricLoader.getInstance()
-            .getModContainer(namespace)
-            .map(container -> container.getMetadata().getName())
-            .orElse(namespace);
+        String modName =
+                FabricLoader.getInstance()
+                        .getModContainer(namespace)
+                        .map(container -> container.getMetadata().getName())
+                        .orElse(namespace);
         this.modLine = Text.literal(modName + " (" + namespace + ")");
     }
 
     @Override
-    public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void render(
+            DrawContext context,
+            int index,
+            int y,
+            int x,
+            int entryWidth,
+            int entryHeight,
+            int mouseX,
+            int mouseY,
+            boolean hovered,
+            float tickDelta) {
         int iconX = x + 2;
         int iconY = y + 2;
         int textX = iconX + 20;
@@ -54,6 +65,4 @@ public class ItemEntry extends ElementListWidget.Entry<ItemEntry> {
     public List<? extends Element> children() {
         return List.of();
     }
-
-
 }

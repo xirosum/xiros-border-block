@@ -1,3 +1,4 @@
+/* (C)2026 */
 package com.xirosum.xiros.border.block.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -11,9 +12,11 @@ import net.minecraft.util.Identifier;
 
 public class BorderBlockScreen extends HandledScreen<BorderBlockScreenHandler> {
 
-    private static final Identifier TEXTURE = new Identifier(XirosBorderBlock.MOD_ID, "textures/gui/border_block_gui.png");
+    private static final Identifier TEXTURE =
+            new Identifier(XirosBorderBlock.MOD_ID, "textures/gui/border_block_gui.png");
 
-    public BorderBlockScreen(BorderBlockScreenHandler handler, PlayerInventory playerInventory, Text title) {
+    public BorderBlockScreen(
+            BorderBlockScreenHandler handler, PlayerInventory playerInventory, Text title) {
         super(handler, playerInventory, title);
     }
 
@@ -29,14 +32,14 @@ public class BorderBlockScreen extends HandledScreen<BorderBlockScreenHandler> {
     @Override
     protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-        RenderSystem.setShaderColor(1f,1f,1f,1f);
-        RenderSystem.setShaderTexture(0,TEXTURE);
+        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+        RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
 
-        context.drawTexture(TEXTURE, x,y,0,0, backgroundWidth, backgroundHeight);
+        context.drawTexture(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);
 
-        renderProgressArrow(context, x,y);
+        renderProgressArrow(context, x, y);
     }
 
     private void renderProgressArrow(DrawContext context, int x, int y) {

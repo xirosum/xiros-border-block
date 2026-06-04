@@ -1,3 +1,4 @@
+/* (C)2026 */
 package com.xirosum.xiros.border.block.logic.score;
 
 import com.xirosum.xiros.border.block.XirosBorderBlock;
@@ -16,23 +17,36 @@ public class HoarderScoreBoard {
     }
 
     public void addHoarderToScoreboard() {
-        SERVER.execute(() -> {
-            if (SERVER.getScoreboard().getObjective(OBJECTIVE_NAME) == null) {
-                SERVER.getScoreboard().addObjective(OBJECTIVE_NAME, ScoreboardCriterion.DUMMY, Text.of(DISPLAY_NAME), ScoreboardCriterion.RenderType.INTEGER);
-            }
-        });
+        SERVER.execute(
+                () -> {
+                    if (SERVER.getScoreboard().getObjective(OBJECTIVE_NAME) == null) {
+                        SERVER.getScoreboard()
+                                .addObjective(
+                                        OBJECTIVE_NAME,
+                                        ScoreboardCriterion.DUMMY,
+                                        Text.of(DISPLAY_NAME),
+                                        ScoreboardCriterion.RenderType.INTEGER);
+                    }
+                });
     }
 
     public void updatePlayerScore(String playerName, int score) {
-        SERVER.execute(() -> {
-            if (SERVER.getScoreboard().getObjective(OBJECTIVE_NAME) != null) {
-                ScoreboardPlayerScore playerScore = SERVER.getScoreboard().getPlayerScore(playerName, SERVER.getScoreboard().getObjective(OBJECTIVE_NAME));
-                playerScore.setScore(score);
-                SERVER.getScoreboard().updateScore(playerScore);
+        SERVER.execute(
+                () -> {
+                    if (SERVER.getScoreboard().getObjective(OBJECTIVE_NAME) != null) {
+                        ScoreboardPlayerScore playerScore =
+                                SERVER.getScoreboard()
+                                        .getPlayerScore(
+                                                playerName,
+                                                SERVER.getScoreboard()
+                                                        .getObjective(OBJECTIVE_NAME));
+                        playerScore.setScore(score);
+                        SERVER.getScoreboard().updateScore(playerScore);
 
-                XirosBorderBlock.LOGGER.info("Updated score for player {}: {}", playerName, score);
-            }
-        });
+                        XirosBorderBlock.LOGGER.info(
+                                "Updated score for player {}: {}", playerName, score);
+                    }
+                });
     }
 
     public boolean scoreboardActive() {
@@ -40,7 +54,9 @@ public class HoarderScoreBoard {
     }
 
     public void setScoreboardDisplayPosition(int slot) {
-        SERVER.getScoreboard().setObjectiveSlot(slot, SERVER.getScoreboard().getObjective(OBJECTIVE_NAME)); // 1 is the sidebar
+        SERVER.getScoreboard()
+                .setObjectiveSlot(
+                        slot,
+                        SERVER.getScoreboard().getObjective(OBJECTIVE_NAME)); // 1 is the sidebar
     }
-
 }

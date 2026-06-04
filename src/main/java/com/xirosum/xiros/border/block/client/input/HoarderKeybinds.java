@@ -1,3 +1,4 @@
+/* (C)2026 */
 package com.xirosum.xiros.border.block.client.input;
 
 import com.xirosum.xiros.border.block.network.RequestHoarderDataPacket;
@@ -15,30 +16,31 @@ public final class HoarderKeybinds {
     private static final String OPEN_HOARDER_MENU_KEY = "key.xiros-border-block.open_hoarder_menu";
     private static final String HOARDER_MENU_TITLE = "screen.xiros-border-block.hoarder_menu";
 
-    private static final KeyBinding OPEN_MENU = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-        OPEN_HOARDER_MENU_KEY,
-        InputUtil.Type.KEYSYM,
-        GLFW.GLFW_KEY_H,
-        KEY_CATEGORY
-    ));
+    private static final KeyBinding OPEN_MENU =
+            KeyBindingHelper.registerKeyBinding(
+                    new KeyBinding(
+                            OPEN_HOARDER_MENU_KEY,
+                            InputUtil.Type.KEYSYM,
+                            GLFW.GLFW_KEY_H,
+                            KEY_CATEGORY));
 
-    private HoarderKeybinds() {
-    }
+    private HoarderKeybinds() {}
 
     public static void register() {
-        ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            while (OPEN_MENU.wasPressed()) {
-                if (client.player == null) {
-                    continue;
-                }
+        ClientTickEvents.END_CLIENT_TICK.register(
+                client -> {
+                    while (OPEN_MENU.wasPressed()) {
+                        if (client.player == null) {
+                            continue;
+                        }
 
-                // Request the hoarder data from the server
-                ClientPlayNetworking.send(new RequestHoarderDataPacket());
-                
-                // Open the screen after requesting data
-                client.setScreen(new HoarderMenuScreen(Text.translatable(HOARDER_MENU_TITLE)));
-            }
-        });
+                        // Request the hoarder data from the server
+                        ClientPlayNetworking.send(new RequestHoarderDataPacket());
+
+                        // Open the screen after requesting data
+                        client.setScreen(
+                                new HoarderMenuScreen(Text.translatable(HOARDER_MENU_TITLE)));
+                    }
+                });
     }
 }
-

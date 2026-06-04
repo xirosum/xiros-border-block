@@ -1,3 +1,4 @@
+/* (C)2026 */
 package com.xirosum.xiros.border.block.client.model.block;
 
 import com.xirosum.xiros.border.block.XirosBorderBlock;
@@ -9,5 +10,4 @@ public class CorruptedBorderBlockModel extends DefaultedBlockGeoModel<CorruptedB
     public CorruptedBorderBlockModel() {
         super(new Identifier(XirosBorderBlock.MOD_ID, "corrupted_border_block"));
     }
-
 }

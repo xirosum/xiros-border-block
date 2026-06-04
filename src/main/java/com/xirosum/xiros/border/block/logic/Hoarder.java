@@ -1,3 +1,4 @@
+/* (C)2026 */
 package com.xirosum.xiros.border.block.logic;
 
 import com.xirosum.xiros.border.block.XirosBorderBlock;
@@ -9,9 +10,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-
-import java.util.Objects;
-
 
 public class Hoarder {
     private final HoarderData data = XirosBorderBlock.hoarderData;
@@ -28,7 +26,11 @@ public class Hoarder {
 
         // Check the player's inventory for specific items and update the block's state accordingly
         if (!data.addFoundItem(itemIdStr)) {
-            XirosBorderBlock.LOGGER.info("Player {} found item {} but it has already been found before, no border increase", player.getName(), itemIdStr);
+            XirosBorderBlock.LOGGER.info(
+                    "Player {} found item {} but it has already been found before, no border"
+                            + " increase",
+                    player.getName(),
+                    itemIdStr);
             return;
         }
 
@@ -39,25 +41,38 @@ public class Hoarder {
         increaseBorder(player.getWorld(), itemIdStr);
 
         if (XirosBorderBlock.hoarderScoreBoard.scoreboardActive()) {
-            XirosBorderBlock.hoarderScoreBoard.updatePlayerScore(player.getName().getString(), data.playerItemCounts().get(player.getUuidAsString()));
+            XirosBorderBlock.hoarderScoreBoard.updatePlayerScore(
+                    player.getName().getString(),
+                    data.playerItemCounts().get(player.getUuidAsString()));
         }
     }
 
     private void increaseBorder(World world, String item) {
         if (AchievementItems.achievementItems.containsKey(item)) {
-            XirosBorderBlock.LOGGER.debug("Player found achievement item {}, increasing border size by 5", item);
-            world.getWorldBorder().setSize(world.getWorldBorder().getSize() + AchievementItems.achievementItems.get(item));
-            XirosBorderBlock.LOGGER.debug("World border size increased to {} due to player finding achievement item {}", world.getWorldBorder().getSize(), item);
+            XirosBorderBlock.LOGGER.debug(
+                    "Player found achievement item {}, increasing border size by 5", item);
+            world.getWorldBorder()
+                    .setSize(
+                            world.getWorldBorder().getSize()
+                                    + AchievementItems.achievementItems.get(item));
+            XirosBorderBlock.LOGGER.debug(
+                    "World border size increased to {} due to player finding achievement item {}",
+                    world.getWorldBorder().getSize(),
+                    item);
         } else {
-            world.getWorldBorder().setSize(world.getWorldBorder().getSize() + BORDER_INCREASE_AMOUNT);
-            XirosBorderBlock.LOGGER.debug("World border size increased to {} due to player finding new item", world.getWorldBorder().getSize());
+            world.getWorldBorder()
+                    .setSize(world.getWorldBorder().getSize() + BORDER_INCREASE_AMOUNT);
+            XirosBorderBlock.LOGGER.debug(
+                    "World border size increased to {} due to player finding new item",
+                    world.getWorldBorder().getSize());
         }
     }
 
     public void clear() {
         data.clearProgress();
 
-        XirosBorderBlock.LOGGER.info("Hoarder data cleared, all found items and player counts reset");
+        XirosBorderBlock.LOGGER.info(
+                "Hoarder data cleared, all found items and player counts reset");
     }
 
     public void displayCompletion(PlayerEntity player) {
@@ -65,7 +80,9 @@ public class Hoarder {
     }
 
     private void displayFoundItems(PlayerEntity player, String item) {
-            displayToAllPlayers(player, Text.of("Player " + player.getName().getString() + " found a new item: " + item));
+        displayToAllPlayers(
+                player,
+                Text.of("Player " + player.getName().getString() + " found a new item: " + item));
     }
 
     public void displayScore(PlayerEntity player) {
@@ -73,11 +90,21 @@ public class Hoarder {
         int totalItems = (int) Registries.ITEM.stream().count();
         double percentage = (double) foundItems / totalItems * 100;
 
-        displayToAllPlayers(player, Text.of("Player " + player.getName().getString() + " has found " + foundItems + " out of " + totalItems + " items (" + String.format("%.2f", percentage) + "%)"));
+        displayToAllPlayers(
+                player,
+                Text.of(
+                        "Player "
+                                + player.getName().getString()
+                                + " has found "
+                                + foundItems
+                                + " out of "
+                                + totalItems
+                                + " items ("
+                                + String.format("%.2f", percentage)
+                                + "%)"));
     }
 
     private void displayToAllPlayers(PlayerEntity player, Text text) {
-       XirosBorderBlock.serverShared.getPlayerManager().broadcast(text, false);
+        XirosBorderBlock.serverShared.getPlayerManager().broadcast(text, false);
     }
-
 }

@@ -1,3 +1,4 @@
+/* (C)2026 */
 package com.xirosum.xiros.border.block.block;
 
 import com.xirosum.xiros.border.block.XirosBorderBlock;
@@ -17,17 +18,28 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
 public class ModBlocks {
-    public static final Block BORDER_BLOCK = registerBlock(("border_block"), new BorderBlock(FabricBlockSettings.copyOf(Blocks.BEDROCK).nonOpaque()));
-    public static final Block CORRUPTED_BORDER_BLOCK = registerBlock(("corrupted_border_block"), new CorruptedBorderBlock(FabricBlockSettings.copyOf(Blocks.BEDROCK).nonOpaque()));
+    public static final Block BORDER_BLOCK =
+            registerBlock(
+                    ("border_block"),
+                    new BorderBlock(FabricBlockSettings.copyOf(Blocks.BEDROCK).nonOpaque()));
+    public static final Block CORRUPTED_BORDER_BLOCK =
+            registerBlock(
+                    ("corrupted_border_block"),
+                    new CorruptedBorderBlock(
+                            FabricBlockSettings.copyOf(Blocks.BEDROCK).nonOpaque()));
 
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);
 
-        return Registry.register(Registries.BLOCK, new Identifier(XirosBorderBlock.MOD_ID, name), block);
+        return Registry.register(
+                Registries.BLOCK, new Identifier(XirosBorderBlock.MOD_ID, name), block);
     }
 
     public static Item registerBlockItem(String name, Block block) {
-        return Registry.register(Registries.ITEM, new Identifier(XirosBorderBlock.MOD_ID, name), new BlockItem(block, new FabricItemSettings()));
+        return Registry.register(
+                Registries.ITEM,
+                new Identifier(XirosBorderBlock.MOD_ID, name),
+                new BlockItem(block, new FabricItemSettings()));
     }
 
     public static void addItemsToRedstoneTabItemGroup(FabricItemGroupEntries entries) {
@@ -35,6 +47,7 @@ public class ModBlocks {
     }
 
     public static void registerModBlocks() {
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(ModBlocks::addItemsToRedstoneTabItemGroup);
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE)
+                .register(ModBlocks::addItemsToRedstoneTabItemGroup);
     }
 }

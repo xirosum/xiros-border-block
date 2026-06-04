@@ -1,28 +1,27 @@
+/* (C)2026 */
 package com.xirosum.xiros.border.block.network;
 
 import com.xirosum.xiros.border.block.XirosBorderBlock;
-import com.xirosum.xiros.border.block.client.HoarderDataCache;
-import net.fabricmc.fabric.api.networking.v1.FabricPacket;
-import net.fabricmc.fabric.api.networking.v1.PacketType;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.collection.DefaultedList;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.fabricmc.fabric.api.networking.v1.FabricPacket;
+import net.fabricmc.fabric.api.networking.v1.PacketType;
+import net.minecraft.network.PacketByteBuf;
 
 public class HoarderDataSyncPacket implements FabricPacket {
-    public static final PacketType<HoarderDataSyncPacket> TYPE = PacketType.create(
-        new net.minecraft.util.Identifier(XirosBorderBlock.MOD_ID, "hoarder_data_sync"),
-        HoarderDataSyncPacket::new
-    );
+    public static final PacketType<HoarderDataSyncPacket> TYPE =
+            PacketType.create(
+                    new net.minecraft.util.Identifier(XirosBorderBlock.MOD_ID, "hoarder_data_sync"),
+                    HoarderDataSyncPacket::new);
 
     private List<String> foundItems;
     private Map<String, Integer> playerItemCounts;
     private boolean active;
 
-    public HoarderDataSyncPacket(List<String> foundItems, Map<String, Integer> playerItemCounts, boolean active) {
+    public HoarderDataSyncPacket(
+            List<String> foundItems, Map<String, Integer> playerItemCounts, boolean active) {
         this.foundItems = foundItems;
         this.playerItemCounts = playerItemCounts;
         this.active = active;
@@ -85,4 +84,3 @@ public class HoarderDataSyncPacket implements FabricPacket {
         return active;
     }
 }
-

@@ -1,5 +1,7 @@
+/* (C)2026 */
 package com.xirosum.xiros.border.block.block.entity;
 
+import java.util.List;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
@@ -9,8 +11,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 /**
  * A simple {@code SidedInventory} implementation with only default methods + an item list getter.

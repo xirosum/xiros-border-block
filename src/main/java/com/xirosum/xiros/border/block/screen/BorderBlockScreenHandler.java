@@ -1,7 +1,7 @@
+/* (C)2026 */
 package com.xirosum.xiros.border.block.screen;
 
 import com.xirosum.xiros.border.block.block.entity.BaseBorderBlockEntity;
-import com.xirosum.xiros.border.block.block.entity.BorderBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -20,14 +20,23 @@ public class BorderBlockScreenHandler extends ScreenHandler {
 
     public final BaseBorderBlockEntity blockEntity;
 
-    public BorderBlockScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
-        this(syncId, playerInventory, playerInventory.player.getWorld().getBlockEntity(buf.readBlockPos()), new ArrayPropertyDelegate(2));
+    public BorderBlockScreenHandler(
+            int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
+        this(
+                syncId,
+                playerInventory,
+                playerInventory.player.getWorld().getBlockEntity(buf.readBlockPos()),
+                new ArrayPropertyDelegate(2));
     }
 
-    public BorderBlockScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity, PropertyDelegate propertyDelegate) {
+    public BorderBlockScreenHandler(
+            int syncId,
+            PlayerInventory playerInventory,
+            BlockEntity blockEntity,
+            PropertyDelegate propertyDelegate) {
         super(ModScreenHandlers.BORDER_BLOCK_SCREEN_HANDLER, syncId);
 
-        checkSize((Inventory)blockEntity, 2);
+        checkSize((Inventory) blockEntity, 2);
         this.inventory = (Inventory) blockEntity;
 
         inventory.onOpen(playerInventory.player);
@@ -49,7 +58,7 @@ public class BorderBlockScreenHandler extends ScreenHandler {
 
     public int getScaledProgress() {
         int progress = this.propertyDelegate.get(0);
-        int maxProgress = this.propertyDelegate.get(1);  // Max Progress
+        int maxProgress = this.propertyDelegate.get(1); // Max Progress
         int progressArrowSize = 26; // This is the width in pixels of your arrow
 
         return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
@@ -63,7 +72,8 @@ public class BorderBlockScreenHandler extends ScreenHandler {
             ItemStack originalStack = slot.getStack();
             newStack = originalStack.copy();
             if (invSlot < this.inventory.size()) {
-                if (!this.insertItem(originalStack, this.inventory.size(), this.slots.size(), true)) {
+                if (!this.insertItem(
+                        originalStack, this.inventory.size(), this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
             } else if (!this.insertItem(originalStack, 0, this.inventory.size(), false)) {
@@ -96,7 +106,7 @@ public class BorderBlockScreenHandler extends ScreenHandler {
 
     private void addPlayerHotbar(PlayerInventory playerInventory) {
         for (int i = 0; i < 9; ++i) {
-            this.addSlot((new Slot(playerInventory, i , 8 + i * 18, 142)));
+            this.addSlot((new Slot(playerInventory, i, 8 + i * 18, 142)));
         }
     }
 }
