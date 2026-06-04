@@ -4,7 +4,11 @@
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
 		"ItemEntityMixin",
-		"CraftingResultMixin"
+		"SlotMixin",
+		"AbstractFurnaceScreenHandlerMixin",
+		"CraftingScreenHandlerMixin",
+		"PlayerScreenHandlerMixin",
+		"StonecutterScreenHandlerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
