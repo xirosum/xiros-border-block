@@ -23,11 +23,12 @@ public class CompletionPercentage {
     public static Text getCompletion() {
         long items_count = Registries.ITEM.stream().count();
 
-        long unobtainable_items_count =
-                UnobtainableItems.unobtainableItems.size();
+        long unobtainable_items_count = UnobtainableItems.unobtainableItems.size();
 
         double percentage =
-                calculate(XirosBorderBlock.hoarderData.foundItems().size(), items_count - unobtainable_items_count);
+                calculate(
+                        XirosBorderBlock.hoarderData.foundItems().size(),
+                        items_count - unobtainable_items_count);
 
         return completionText(XirosBorderBlock.hoarderData.foundItems().size(), (int) items_count);
     }

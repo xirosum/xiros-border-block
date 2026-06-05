@@ -4,7 +4,6 @@ package com.xirosum.xiros.border.block.logic;
 import com.xirosum.xiros.border.block.XirosBorderBlock;
 import com.xirosum.xiros.border.block.logic.persistance.HoarderData;
 import com.xirosum.xiros.border.block.logic.score.CompletionPercentage;
-import com.xirosum.xiros.border.block.logic.unobtainable.UnobtainableItems;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;

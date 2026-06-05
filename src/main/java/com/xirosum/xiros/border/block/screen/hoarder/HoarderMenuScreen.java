@@ -148,7 +148,9 @@ public class HoarderMenuScreen extends Screen {
         for (var entry : Registries.ITEM.getEntrySet()) {
             String itemId = entry.getKey().getValue().toString();
 
-            if (UnobtainableItems.unobtainableItems.contains(itemId) || entry.getValue().asItem() instanceof SpawnEggItem || itemId.contains("geckolib")) {
+            if (UnobtainableItems.unobtainableItems.contains(itemId)
+                    || entry.getValue().asItem() instanceof SpawnEggItem
+                    || itemId.contains("geckolib")) {
                 continue; // Skip invalid entries
             }
             XirosBorderBlock.LOGGER.info(itemId);
