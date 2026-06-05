@@ -3,6 +3,7 @@ package com.xirosum.xiros.border.block.screen.hoarder;
 
 import com.xirosum.xiros.border.block.XirosBorderBlock;
 import com.xirosum.xiros.border.block.client.HoarderDataCache;
+import com.xirosum.xiros.border.block.logic.unobtainable.UnobtainableItems;
 import com.xirosum.xiros.border.block.screen.hoarder.widgets.ItemEntry;
 import com.xirosum.xiros.border.block.screen.hoarder.widgets.ItemListWidget;
 import java.util.HashSet;
@@ -13,6 +14,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -145,6 +147,11 @@ public class HoarderMenuScreen extends Screen {
         // Add missing items (all items not in foundItems)
         for (var entry : Registries.ITEM.getEntrySet()) {
             String itemId = entry.getKey().getValue().toString();
+
+            if (UnobtainableItems.unobtainableItems.contains(itemId) || entry.getValue().asItem() instanceof SpawnEggItem || itemId.contains("geckolib")) {
+                continue; // Skip invalid entries
+            }
+            XirosBorderBlock.LOGGER.info(itemId);
             if (!foundItemsSet.contains(itemId)
                     && matchesSearch(entry.getValue(), itemId, searchQuery)) {
                 missingItemsListWidget.addBlockEntry(
